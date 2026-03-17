@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Woof SMP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b, #020617);
+      color: white;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 50px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    nav h1 { font-size: 24px; }
+
+    nav a {
+      margin-left: 20px;
+      color: #cbd5f5;
+      text-decoration: none;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 120px 20px;
+    }
+
+    .hero h1 {
+      font-size: 70px;
+      background: linear-gradient(90deg, #3b82f6, #a855f7);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .btn {
+      margin-top: 20px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #3b82f6, #a855f7);
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .section {
+      padding: 60px 50px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      transition: 0.3s;
+    }
+
+    .card:hover { transform: scale(1.05); }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <h1>🐶 Woof SMP</h1>
+  <div>
+    <a href="#">Home</a>
+    <a href="#shop">Shop</a>
+    <a href="#join">Join</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <h1>Woof SMP</h1>
+  <p>Best Minecraft Survival Server</p>
+  <button class="btn" onclick="copyIP()">Copy Server IP</button>
+</section>
+
+<section class="section">
+  <h2>Features</h2>
+  <div class="grid">
+    <div class="card">Survival</div>
+    <div class="card">Economy</div>
+    <div class="card">Trading</div>
+  </div>
+</section>
+
+<section id="shop" class="section">
+  <h2>🛒 Shop</h2>
+  <div class="grid">
+    <div class="card">Iron - $5 <br><button class="btn" onclick="add('Iron')">Buy</button></div>
+    <div class="card">Gold - $10 <br><button class="btn" onclick="add('Gold')">Buy</button></div>
+    <div class="card">Apples - $2 <br><button class="btn" onclick="add('Apples')">Buy</button></div>
+    <div class="card">Diamonds - $20 <br><button class="btn" onclick="add('Diamonds')">Buy</button></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>Cart</h2>
+  <p id="cart">No items yet</p>
+</section>
+
+<section id="join" class="hero">
+  <h2>Join Now</h2>
+  <button class="btn" onclick="copyIP()">Play Now</button>
+</section>
+
+<footer>
+  © 2026 Woof SMP
+</footer>
+
+<script>
+  let cart = [];
+
+  function copyIP() {
+    navigator.clipboard.writeText("play.woofsmp.net");
+    alert("IP Copied!");
+  }
+
+  function add(item) {
+    cart.push(item);
+    document.getElementById("cart").innerText = cart.join(", ");
+  }
+</script>
+
+</body>
+</html>

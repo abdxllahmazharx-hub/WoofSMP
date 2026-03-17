@@ -1,200 +1,429 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Woof SMP</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Woof SMP | Premium Minecraft Survival</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+    <style>
+        :root {
+            --bg: #050505;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-heavy: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.1);
+            --blue: #00d4ff;
+            --purple: #9d50bb;
+            --gold: #ffcc33;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
-body{
-  color:white;
-  overflow-x:hidden;
-  background: linear-gradient(-45deg,#0ea5e9,#9333ea,#1e293b,#0f172a);
-  background-size:400% 400%;
-  animation:bgMove 12s ease infinite;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
 
-@keyframes bgMove{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
 
-nav{
-  display:flex;
-  justify-content:space-between;
-  padding:20px 50px;
-  backdrop-filter:blur(15px);
-  background:rgba(0,0,0,0.4);
-}
+        /* --- BACKGROUND ANIMATION --- */
+        .bg-wrapper {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1a0b2e 0%, #050505 100%);
+        }
 
-.hero{
-  text-align:center;
-  padding:120px 20px;
-}
+        .bg-gradient {
+            position: absolute;
+            width: 200%; height: 200%;
+            top: -50%; left: -50%;
+            background: conic-gradient(from 180deg at 50% 50%, var(--blue), var(--purple), var(--bg), var(--purple), var(--blue));
+            opacity: 0.15;
+            filter: blur(80px);
+            animation: rotate 20s linear infinite;
+        }
 
-.hero h1{
-  font-size:80px;
-  background:linear-gradient(90deg,#38bdf8,#a855f7,#facc15);
-  -webkit-background-clip:text;
-  color:transparent;
-  animation:glow 2s infinite alternate;
-}
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
 
-@keyframes glow{
-  from{text-shadow:0 0 10px #38bdf8}
-  to{text-shadow:0 0 25px #a855f7}
-}
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed;
+            top: 0; width: 100%;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 8%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
 
-.btn{
-  margin-top:20px;
-  padding:15px 30px;
-  border:none;
-  border-radius:12px;
-  background:linear-gradient(90deg,#38bdf8,#a855f7);
-  color:white;
-  cursor:pointer;
-  transition:0.3s;
-}
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700; font-size: 1.8rem;
+            letter-spacing: 2px;
+        }
 
-.btn:hover{
-  transform:scale(1.1);
-}
+        .logo span { color: var(--blue); text-shadow: 0 0 15px var(--blue); }
 
-.section{
-  padding:70px 50px;
-}
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links a { 
+            text-decoration: none; color: #fff; 
+            font-size: 0.9rem; font-weight: 600; 
+            transition: var(--transition);
+            opacity: 0.7;
+        }
+        .nav-links a:hover { opacity: 1; color: var(--blue); }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:25px;
-}
+        .cart-trigger {
+            position: relative; cursor: pointer;
+            font-size: 1.2rem; transition: var(--transition);
+        }
+        #cart-count {
+            position: absolute; top: -8px; right: -12px;
+            background: var(--blue); color: #000;
+            font-size: 0.7rem; font-weight: bold;
+            padding: 2px 6px; border-radius: 50%;
+        }
 
-.card{
-  background:rgba(0,0,0,0.4);
-  padding:25px;
-  border-radius:20px;
-  text-align:center;
-  backdrop-filter:blur(10px);
-  transition:0.4s;
-}
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center; padding: 0 20px;
+        }
 
-.card:hover{
-  transform:translateY(-10px) scale(1.05);
-}
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            background: linear-gradient(to right, #fff, var(--blue), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.3));
+            margin-bottom: 10px;
+        }
 
-.card img{
-  width:60px;
-  margin-bottom:10px;
-}
+        .hero p { font-size: 1.2rem; opacity: 0.8; margin-bottom: 30px; letter-spacing: 1px; }
 
-#cartBox{
-  background:rgba(0,0,0,0.5);
-  padding:20px;
-  border-radius:15px;
-}
+        .btn-group { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
 
-footer{
-  text-align:center;
-  padding:20px;
-  opacity:0.7;
-}
+        .btn {
+            padding: 15px 35px; border-radius: 50px;
+            font-weight: 700; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 1px;
+            transition: var(--transition); border: none;
+            display: flex; align-items: center; gap: 10px;
+        }
 
-</style>
+        .btn-primary {
+            background: linear-gradient(45deg, var(--blue), var(--purple));
+            color: white; box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: white; backdrop-filter: blur(10px);
+        }
+
+        .btn:hover { transform: translateY(-5px) scale(1.05); }
+
+        /* --- REVEAL SYSTEM --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- FEATURES --- */
+        section { padding: 100px 10%; }
+        .section-title {
+            text-align: center; font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem; margin-bottom: 60px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 40px; border-radius: 25px;
+            backdrop-filter: blur(10px);
+            text-align: center; transition: var(--transition);
+        }
+
+        .card:hover {
+            background: var(--glass-heavy);
+            border-color: var(--blue);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .card i { font-size: 3rem; color: var(--blue); margin-bottom: 20px; }
+
+        /* --- SHOP --- */
+        .shop-item img { width: 80px; margin-bottom: 20px; filter: drop-shadow(0 0 10px var(--blue)); }
+        .price { color: var(--gold); font-weight: bold; font-size: 1.4rem; margin: 15px 0; }
+
+        /* --- CART MODAL --- */
+        #cart-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            display: none; align-items: center; justify-content: center; z-index: 2000;
+        }
+
+        .cart-content {
+            background: #111; width: 90%; max-width: 500px;
+            padding: 40px; border-radius: 30px; border: 1px solid var(--blue);
+        }
+
+        .cart-item {
+            display: flex; justify-content: space-between;
+            padding: 10px 0; border-bottom: 1px solid var(--border);
+        }
+
+        /* --- LIVE STATUS --- */
+        .status-panel {
+            background: linear-gradient(135deg, var(--glass), rgba(0, 212, 255, 0.05));
+            border-radius: 30px; padding: 60px; text-align: center;
+            border: 1px solid var(--border);
+        }
+
+        .pulse {
+            width: 12px; height: 12px; background: #00ff88;
+            border-radius: 50%; display: inline-block;
+            margin-right: 10px; box-shadow: 0 0 15px #00ff88;
+            animation: pulse-ring 1.5s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.5; }
+        }
+
+        .stat-grid { display: flex; justify-content: center; gap: 50px; margin-top: 40px; }
+        .counter { font-size: 3rem; font-weight: bold; font-family: 'Orbitron'; color: var(--blue); }
+
+        footer {
+            padding: 50px 10%; text-align: center;
+            border-top: 1px solid var(--border);
+            opacity: 0.6; font-size: 0.9rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 4rem; }
+            .stat-grid { flex-direction: column; gap: 20px; }
+        }
+    </style>
 </head>
-
 <body>
 
-<nav>
-<h1>🐶 Woof SMP</h1>
-<div>
-<a href="#">Home</a>
-<a href="#shop">Shop</a>
-<a href="#join">Join</a>
-</div>
-</nav>
+    <div class="bg-wrapper">
+        <div class="bg-gradient"></div>
+    </div>
 
-<section class="hero">
-<h1>Woof SMP</h1>
-<p>Next Level Minecraft Server</p>
-<button class="btn" onclick="copyIP()">Copy IP</button>
-</section>
+    <nav class="navbar">
+        <div class="logo">WOOF<span>SMP</span></div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#status">Live Status</a></li>
+        </ul>
+        <div class="cart-trigger" onclick="toggleCart()">
+            <i class="fa-solid fa-basket-shopping"></i>
+            <span id="cart-count">0</span>
+        </div>
+    </nav>
 
-<section class="section">
-<h2>✨ Features</h2>
-<div class="grid">
-<div class="card">⚔️ Survival</div>
-<div class="card">💰 Economy</div>
-<div class="card">🤝 Trading</div>
-</div>
-</section>
+    <section id="home" class="hero">
+        <h1 class="reveal active">WOOF SMP</h1>
+        <p class="reveal active">The Ultimate Next-Gen Survival Experience</p>
+        <div class="btn-group reveal active">
+            <button class="btn btn-primary" onclick="copyIP()">
+                <i class="fa-solid fa-play"></i> <span id="ip-text">aitchisonlife.xyz</span>
+            </button>
+            <button class="btn btn-secondary">
+                <i class="fa-brands fa-discord"></i> Community
+            </button>
+        </div>
+    </section>
 
-<section id="shop" class="section">
-<h2>🛒 Shop</h2>
-<div class="grid">
+    <section id="features">
+        <h2 class="section-title reveal">Why Woof SMP?</h2>
+        <div class="grid">
+            <div class="card reveal">
+                <i class="fa-solid fa-earth-americas"></i>
+                <h3>Survival</h3>
+                <p>Explore a custom-generated world with unique biomes and enhanced vanilla mechanics.</p>
+            </div>
+            <div class="card reveal">
+                <i class="fa-solid fa-chart-line"></i>
+                <h3>Economy</h3>
+                <p>Trade with players, set up shops, and dominate the server market.</p>
+            </div>
+            <div class="card reveal">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Protection</h3>
+                <p>Advanced land claiming tools to keep your builds safe from griefers.</p>
+            </div>
+        </div>
+    </section>
 
-<div class="card">
-<img src="https://minecraft.wiki/images/Iron_Ingot_JE3_BE2.png">
-<h3>Iron</h3>
-<p>$5</p>
-<button class="btn" onclick="add('Iron')">Buy</button>
-</div>
+    <section id="shop">
+        <h2 class="section-title reveal">Server Store</h2>
+        <div class="grid">
+            <div class="card shop-item reveal">
+                <img src="https://minecraft.wiki/images/Iron_Ingot_JE3_BE2.png" alt="Iron">
+                <h3>Iron Rank</h3>
+                <p class="price">$4.99</p>
+                <button class="btn btn-primary" onclick="addToCart('Iron Rank', 4.99)">Add to Cart</button>
+            </div>
+            <div class="card shop-item reveal">
+                <img src="https://minecraft.wiki/images/Gold_Ingot_JE4_BE2.png" alt="Gold">
+                <h3>Gold Rank</h3>
+                <p class="price">$9.99</p>
+                <button class="btn btn-primary" onclick="addToCart('Gold Rank', 9.99)">Add to Cart</button>
+            </div>
+            <div class="card shop-item reveal">
+                <img src="https://minecraft.wiki/images/Diamond_JE3_BE3.png" alt="Diamond">
+                <h3>Diamond Rank</h3>
+                <p class="price">$19.99</p>
+                <button class="btn btn-primary" onclick="addToCart('Diamond Rank', 19.99)">Add to Cart</button>
+            </div>
+        </div>
+    </section>
 
-<div class="card">
-<img src="https://minecraft.wiki/images/Gold_Ingot_JE4_BE2.png">
-<h3>Gold</h3>
-<p>$10</p>
-<button class="btn" onclick="add('Gold')">Buy</button>
-</div>
+    <section id="status">
+        <div class="status-panel reveal">
+            <h2><span class="pulse"></span> Server Status</h2>
+            <div class="stat-grid">
+                <div>
+                    <div class="counter" data-target="142">0</div>
+                    <p>Players Online</p>
+                </div>
+                <div>
+                    <div class="counter" data-target="20">0</div>
+                    <p>TPS</p>
+                </div>
+                <div>
+                    <div class="counter" data-target="99">0</div>
+                    <p>% Uptime</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<div class="card">
-<img src="https://minecraft.wiki/images/Apple_JE3_BE2.png">
-<h3>Apple</h3>
-<p>$2</p>
-<button class="btn" onclick="add('Apple')">Buy</button>
-</div>
+    <div id="cart-modal">
+        <div class="cart-content">
+            <h2 style="font-family: Orbitron; margin-bottom: 20px;">Your Cart</h2>
+            <div id="cart-list"></div>
+            <div style="margin-top: 20px; font-size: 1.5rem; font-weight: bold;">
+                Total: $<span id="cart-total">0.00</span>
+            </div>
+            <div class="btn-group" style="margin-top: 30px;">
+                <button class="btn btn-primary">Checkout Now</button>
+                <button class="btn btn-secondary" onclick="toggleCart()">Close</button>
+            </div>
+        </div>
+    </div>
 
-<div class="card">
-<img src="https://minecraft.wiki/images/Diamond_JE3_BE3.png">
-<h3>Diamond</h3>
-<p>$20</p>
-<button class="btn" onclick="add('Diamond')">Buy</button>
-</div>
+    <footer>
+        <p>&copy; 2026 Woof SMP Network. All Rights Reserved.</p>
+        <p style="margin-top: 10px; font-size: 0.7rem;">Not an official Minecraft product. Not approved by or associated with Mojang.</p>
+    </footer>
 
-</div>
-</section>
+    <script>
+        // --- SCROLL REVEAL LOGIC ---
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    if (entry.target.querySelector('.counter')) {
+                        startCounters(entry.target);
+                    }
+                }
+            });
+        }, { threshold: 0.2 });
 
-<section class="section">
-<h2>🧾 Cart</h2>
-<div id="cartBox">No items yet</div>
-</section>
+        revealElements.forEach(el => revealObserver.observe(el));
 
-<section id="join" class="hero">
-<h2>Join Now</h2>
-<button class="btn" onclick="copyIP()">Play Now</button>
-</section>
+        // --- COUNTER LOGIC ---
+        function startCounters(container) {
+            const counters = container.querySelectorAll('.counter');
+            counters.forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const update = () => {
+                    const count = +counter.innerText;
+                    const speed = target / 50;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + speed);
+                        setTimeout(update, 30);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                update();
+            });
+        }
 
-<footer>
-© 2026 Woof SMP
-</footer>
+        // --- COPY IP LOGIC ---
+        function copyIP() {
+            const ip = "aitchisonlife.xyz";
+            navigator.clipboard.writeText(ip);
+            const span = document.getElementById('ip-text');
+            span.innerText = "Copied!";
+            setTimeout(() => span.innerText = ip, 2000);
+        }
 
-<script>
-let cart=[];
+        // --- CART LOGIC ---
+        let cart = [];
+        let total = 0;
 
-function copyIP(){
-navigator.clipboard.writeText("aitchisonlife.xyz");
-alert("Copied: aitchisonlife.xyz");
-}
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            total += price;
+            updateUI();
+            
+            // Subtle button animation
+            const btn = event.target;
+            btn.innerText = "Added!";
+            setTimeout(() => btn.innerText = "Add to Cart", 1000);
+        }
 
-function add(item){
-cart.push(item);
-document.getElementById("cartBox").innerText=cart.join(", ");
-}
-</script>
+        function updateUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('cart-total').innerText = total.toFixed(2);
+            
+            const list = document.getElementById('cart-list');
+            list.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <span>${item.name}</span>
+                    <span>$${item.price}</span>
+                </div>
+            `).join('');
+        }
 
+        function toggleCart() {
+            const modal = document.getElementById('cart-modal');
+            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+        }
+    </script>
 </body>
 </html>

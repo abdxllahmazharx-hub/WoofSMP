@@ -1,146 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Woof SMP</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woof SMP</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-    body {
-      background: linear-gradient(135deg, #0f172a, #1e293b, #020617);
-      color: white;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
 
-    nav {
-      display: flex;
-      justify-content: space-between;
-      padding: 20px 50px;
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(10px);
-    }
+body{
+  color:white;
+  overflow-x:hidden;
+  background: linear-gradient(-45deg,#0ea5e9,#9333ea,#1e293b,#0f172a);
+  background-size:400% 400%;
+  animation:bgMove 12s ease infinite;
+}
 
-    nav h1 { font-size: 24px; }
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
 
-    nav a {
-      margin-left: 20px;
-      color: #cbd5f5;
-      text-decoration: none;
-    }
+nav{
+  display:flex;
+  justify-content:space-between;
+  padding:20px 50px;
+  backdrop-filter:blur(15px);
+  background:rgba(0,0,0,0.4);
+}
 
-    .hero {
-      text-align: center;
-      padding: 120px 20px;
-    }
+.hero{
+  text-align:center;
+  padding:120px 20px;
+}
 
-    .hero h1 {
-      font-size: 70px;
-      background: linear-gradient(90deg, #3b82f6, #a855f7);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
+.hero h1{
+  font-size:80px;
+  background:linear-gradient(90deg,#38bdf8,#a855f7,#facc15);
+  -webkit-background-clip:text;
+  color:transparent;
+  animation:glow 2s infinite alternate;
+}
 
-    .btn {
-      margin-top: 20px;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(90deg, #3b82f6, #a855f7);
-      color: white;
-      cursor: pointer;
-      font-size: 16px;
-    }
+@keyframes glow{
+  from{text-shadow:0 0 10px #38bdf8}
+  to{text-shadow:0 0 25px #a855f7}
+}
 
-    .section {
-      padding: 60px 50px;
-    }
+.btn{
+  margin-top:20px;
+  padding:15px 30px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(90deg,#38bdf8,#a855f7);
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
+.btn:hover{
+  transform:scale(1.1);
+}
 
-    .card {
-      background: rgba(255,255,255,0.05);
-      padding: 20px;
-      border-radius: 15px;
-      text-align: center;
-      transition: 0.3s;
-    }
+.section{
+  padding:70px 50px;
+}
 
-    .card:hover { transform: scale(1.05); }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
+}
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #94a3b8;
-    }
-  </style>
+.card{
+  background:rgba(0,0,0,0.4);
+  padding:25px;
+  border-radius:20px;
+  text-align:center;
+  backdrop-filter:blur(10px);
+  transition:0.4s;
+}
+
+.card:hover{
+  transform:translateY(-10px) scale(1.05);
+}
+
+.card img{
+  width:60px;
+  margin-bottom:10px;
+}
+
+#cartBox{
+  background:rgba(0,0,0,0.5);
+  padding:20px;
+  border-radius:15px;
+}
+
+footer{
+  text-align:center;
+  padding:20px;
+  opacity:0.7;
+}
+
+</style>
 </head>
+
 <body>
 
 <nav>
-  <h1>🐶 Woof SMP</h1>
-  <div>
-    <a href="#">Home</a>
-    <a href="#shop">Shop</a>
-    <a href="#join">Join</a>
-  </div>
+<h1>🐶 Woof SMP</h1>
+<div>
+<a href="#">Home</a>
+<a href="#shop">Shop</a>
+<a href="#join">Join</a>
+</div>
 </nav>
 
 <section class="hero">
-  <h1>Woof SMP</h1>
-  <p>Best Minecraft Survival Server</p>
-  <button class="btn" onclick="copyIP()">Copy Server IP</button>
+<h1>Woof SMP</h1>
+<p>Next Level Minecraft Server</p>
+<button class="btn" onclick="copyIP()">Copy IP</button>
 </section>
 
 <section class="section">
-  <h2>Features</h2>
-  <div class="grid">
-    <div class="card">Survival</div>
-    <div class="card">Economy</div>
-    <div class="card">Trading</div>
-  </div>
+<h2>✨ Features</h2>
+<div class="grid">
+<div class="card">⚔️ Survival</div>
+<div class="card">💰 Economy</div>
+<div class="card">🤝 Trading</div>
+</div>
 </section>
 
 <section id="shop" class="section">
-  <h2>🛒 Shop</h2>
-  <div class="grid">
-    <div class="card">Iron - $5 <br><button class="btn" onclick="add('Iron')">Buy</button></div>
-    <div class="card">Gold - $10 <br><button class="btn" onclick="add('Gold')">Buy</button></div>
-    <div class="card">Apples - $2 <br><button class="btn" onclick="add('Apples')">Buy</button></div>
-    <div class="card">Diamonds - $20 <br><button class="btn" onclick="add('Diamonds')">Buy</button></div>
-  </div>
+<h2>🛒 Shop</h2>
+<div class="grid">
+
+<div class="card">
+<img src="https://minecraft.wiki/images/Iron_Ingot_JE3_BE2.png">
+<h3>Iron</h3>
+<p>$5</p>
+<button class="btn" onclick="add('Iron')">Buy</button>
+</div>
+
+<div class="card">
+<img src="https://minecraft.wiki/images/Gold_Ingot_JE4_BE2.png">
+<h3>Gold</h3>
+<p>$10</p>
+<button class="btn" onclick="add('Gold')">Buy</button>
+</div>
+
+<div class="card">
+<img src="https://minecraft.wiki/images/Apple_JE3_BE2.png">
+<h3>Apple</h3>
+<p>$2</p>
+<button class="btn" onclick="add('Apple')">Buy</button>
+</div>
+
+<div class="card">
+<img src="https://minecraft.wiki/images/Diamond_JE3_BE3.png">
+<h3>Diamond</h3>
+<p>$20</p>
+<button class="btn" onclick="add('Diamond')">Buy</button>
+</div>
+
+</div>
 </section>
 
 <section class="section">
-  <h2>Cart</h2>
-  <p id="cart">No items yet</p>
+<h2>🧾 Cart</h2>
+<div id="cartBox">No items yet</div>
 </section>
 
 <section id="join" class="hero">
-  <h2>Join Now</h2>
-  <button class="btn" onclick="copyIP()">Play Now</button>
+<h2>Join Now</h2>
+<button class="btn" onclick="copyIP()">Play Now</button>
 </section>
 
 <footer>
-  © 2026 Woof SMP
+© 2026 Woof SMP
 </footer>
 
 <script>
-  let cart = [];
+let cart=[];
 
-  function copyIP() {
-    navigator.clipboard.writeText("play.woofsmp.net");
-    alert("IP Copied!");
-  }
+function copyIP(){
+navigator.clipboard.writeText("aitchisonlife.xyz");
+alert("Copied: aitchisonlife.xyz");
+}
 
-  function add(item) {
-    cart.push(item);
-    document.getElementById("cart").innerText = cart.join(", ");
-  }
+function add(item){
+cart.push(item);
+document.getElementById("cartBox").innerText=cart.join(", ");
+}
 </script>
 
 </body>

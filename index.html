@@ -442,27 +442,7 @@
 
         setInterval(updateClock, 1000);
         refreshButtons();
-function finalizeClaim() {
-    if(!isVerified) return;
-    const qty = parseInt(document.getElementById('claim-slider').value);
-    const username = document.getElementById('p-name').innerText;
-
-    // --- STOCK UPDATE ---
-    currentStock[activeItem] += qty;
-    localStorage.setItem('woof_v3_stock', JSON.stringify(currentStock));
-
-    // --- MINECRAFT ITEM ID MAPPING ---
-    const mcItemIDs = {
-        iron: "iron_ingot",
-        gold: "gold_ingot",
-        apple: "apple",
-        diamond: "diamond"
-    };
-
-    const itemID = mcItemIDs[activeItem] || activeItem;
-    const content = `give ${username} ${itemID} ${qty}`;
-
-
+    <script>
 function sendBotMessageFromShop(username, itemKey, qty) {
     // Map your shop keys to Minecraft IDs
     const mcItemIDs = {

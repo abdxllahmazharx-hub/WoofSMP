@@ -283,7 +283,7 @@
             </div>
             <div class="item-card" id="card-apple">
                 <img src="https://minecraft.wiki/images/Apple_JE3_BE3.png" alt="Apple">
-                <h3>Golden Apple</h3>
+                <h3>Apple</h3>
                 <p class="limit-label">Daily Limit: 64</p>
                 <button class="btn btn-get" onclick="openGate('apple')">Get Item</button>
             </div>
@@ -353,7 +353,7 @@
         const CONFIG = {
             iron: { limit: 5, name: "Iron Ingot" },
             gold: { limit: 10, name: "Gold Ingot" },
-            apple: { limit: 64, name: "Golden Apple" },
+            apple: { limit: 64, name: "Apple" },
             diamond: { limit: 1, name: "Diamond" }
         };
 
@@ -455,25 +455,36 @@ function finalizeClaim() {
     const mcItemIDs = {
         iron: "iron_ingot",
         gold: "gold_ingot",
-        apple: "golden_apple",
+        apple: "apple",
         diamond: "diamond"
     };
 
     const itemID = mcItemIDs[activeItem] || activeItem;
     const content = `give ${username} ${itemID} ${qty}`;
 
-    // --- DISCORD WEBHOOK ---
-    const webhookURL = "https://discord.com/api/webhooks/1483490586471170190/nsVvl0At4ubU0rikem21K6C8uUg1fRs8SqEeYGaPNJ7n2P9vuli5f6sn4U8av862P_93";
-    fetch(webhookURL, {
+
+function sendBotMessageFromShop(username, itemKey, qty) {
+    // Map your shop keys to Minecraft IDs
+    const mcItemIDs = {
+        iron: "iron_ingot",
+        gold: "gold_ingot",
+        apple: "apple",
+        diamond: "diamond"
+    };
+
+    const itemID = mcItemIDs[itemKey] || itemKey;
+
+    fetch('http://MTQ4Mzc3MjI0MTQ3OTk5NTQ3Mg.G6tk9s.98IVI5zqasYaQJSdxGkjUljW9Izlp2h3zo2Is0/send', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content })
-    });
-
-    alert(`Success! Scheduled for ${username}`);
-    closeGate();
-    refreshButtons();
+        body: JSON.stringify({ username, itemID, qty })
+    })
+    .catch(err => console.error("Failed to send bot message:", err));
 }
+
+// Example usage when a user claims 10 gold:
+// sendBotMessageFromShop("x0__StableDFNN", "gold", 10);
+</script>
     </script>
 </body>
 </html>

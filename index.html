@@ -17,6 +17,7 @@
             --blue: #00d4ff;
             --purple: #9d50bb;
             --gold: #ffcc33;
+            --danger: #ff4d4d;
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
@@ -86,17 +87,6 @@
         }
         .nav-links a:hover { opacity: 1; color: var(--blue); }
 
-        .cart-trigger {
-            position: relative; cursor: pointer;
-            font-size: 1.2rem; transition: var(--transition);
-        }
-        #cart-count {
-            position: absolute; top: -8px; right: -12px;
-            background: var(--blue); color: #000;
-            font-size: 0.7rem; font-weight: bold;
-            padding: 2px 6px; border-radius: 50%;
-        }
-
         /* --- HERO SECTION --- */
         .hero {
             height: 100vh;
@@ -115,8 +105,6 @@
             margin-bottom: 10px;
         }
 
-        .hero p { font-size: 1.2rem; opacity: 0.8; margin-bottom: 30px; letter-spacing: 1px; }
-
         .btn-group { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
 
         .btn {
@@ -131,298 +119,284 @@
             background: linear-gradient(45deg, var(--blue), var(--purple));
             color: white; box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
         }
-
-        .btn-secondary {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            color: white; backdrop-filter: blur(10px);
+        
+        .btn:disabled {
+            background: #333;
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.5;
         }
 
-        .btn:hover { transform: translateY(-5px) scale(1.05); }
-
-        /* --- REVEAL SYSTEM --- */
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* --- FEATURES --- */
+        /* --- SHOP & MODALS --- */
         section { padding: 100px 10%; }
         .section-title {
             text-align: center; font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem; margin-bottom: 60px;
+            font-size: 2.5rem; margin-bottom: 20px;
+        }
+
+        .timer-container {
+            text-align: center;
+            margin-bottom: 40px;
+            font-family: 'Orbitron';
+            color: var(--blue);
+            font-size: 1.1rem;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
         }
 
         .card {
             background: var(--glass);
             border: 1px solid var(--border);
-            padding: 40px; border-radius: 25px;
+            padding: 30px; border-radius: 25px;
             backdrop-filter: blur(10px);
             text-align: center; transition: var(--transition);
         }
 
-        .card:hover {
-            background: var(--glass-heavy);
-            border-color: var(--blue);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
+        .shop-item img { width: 60px; margin-bottom: 15px; filter: drop-shadow(0 0 10px var(--blue)); }
 
-        .card i { font-size: 3rem; color: var(--blue); margin-bottom: 20px; }
-
-        /* --- SHOP --- */
-        .shop-item img { width: 80px; margin-bottom: 20px; filter: drop-shadow(0 0 10px var(--blue)); }
-        .price { color: var(--gold); font-weight: bold; font-size: 1.4rem; margin: 15px 0; }
-
-        /* --- CART MODAL --- */
-        #cart-modal {
+        /* --- POPUP MODAL --- */
+        .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
-            display: none; align-items: center; justify-content: center; z-index: 2000;
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(15px);
+            display: none; align-items: center; justify-content: center; z-index: 3000;
         }
 
-        .cart-content {
-            background: #111; width: 90%; max-width: 500px;
+        .modal-content {
+            background: #0a0a0a; width: 90%; max-width: 450px;
             padding: 40px; border-radius: 30px; border: 1px solid var(--blue);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.2);
         }
 
-        .cart-item {
-            display: flex; justify-content: space-between;
-            padding: 10px 0; border-bottom: 1px solid var(--border);
+        .input-field {
+            width: 100%; padding: 15px; border-radius: 12px;
+            background: var(--glass-heavy); border: 1px solid var(--border);
+            color: white; margin-top: 20px; outline: none; font-family: inherit;
         }
 
-        /* --- LIVE STATUS --- */
+        /* --- CUSTOM SLIDER --- */
+        .slider-wrapper { margin: 30px 0; }
+        .slider-label { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 600; }
+        
+        input[type=range] {
+            -webkit-appearance: none; width: 100%; background: transparent;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%; height: 8px; cursor: pointer;
+            background: var(--border); border-radius: 10px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            height: 24px; width: 24px; border-radius: 50%;
+            background: var(--blue); cursor: pointer;
+            -webkit-appearance: none; margin-top: -8px;
+            box-shadow: 0 0 10px var(--blue);
+        }
+
         .status-panel {
             background: linear-gradient(135deg, var(--glass), rgba(0, 212, 255, 0.05));
             border-radius: 30px; padding: 60px; text-align: center;
             border: 1px solid var(--border);
         }
 
-        .pulse {
-            width: 12px; height: 12px; background: #00ff88;
-            border-radius: 50%; display: inline-block;
-            margin-right: 10px; box-shadow: 0 0 15px #00ff88;
-            animation: pulse-ring 1.5s infinite;
-        }
+        /* --- REVEAL SYSTEM --- */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
-        @keyframes pulse-ring {
-            0% { transform: scale(0.8); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(0.8); opacity: 0.5; }
-        }
-
-        .stat-grid { display: flex; justify-content: center; gap: 50px; margin-top: 40px; }
-        .counter { font-size: 3rem; font-weight: bold; font-family: 'Orbitron'; color: var(--blue); }
-
-        footer {
-            padding: 50px 10%; text-align: center;
-            border-top: 1px solid var(--border);
-            opacity: 0.6; font-size: 0.9rem;
-        }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero h1 { font-size: 4rem; }
-            .stat-grid { flex-direction: column; gap: 20px; }
-        }
+        footer { padding: 50px 10%; text-align: center; border-top: 1px solid var(--border); opacity: 0.6; }
     </style>
 </head>
 <body>
 
-    <div class="bg-wrapper">
-        <div class="bg-gradient"></div>
-    </div>
+    <div class="bg-wrapper"><div class="bg-gradient"></div></div>
 
     <nav class="navbar">
         <div class="logo">WOOF<span>SMP</span></div>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
-            <li><a href="#features">Features</a></li>
             <li><a href="#shop">Shop</a></li>
-            <li><a href="#status">Live Status</a></li>
+            <li><a href="#status">Status</a></li>
         </ul>
-        <div class="cart-trigger" onclick="toggleCart()">
-            <i class="fa-solid fa-basket-shopping"></i>
-            <span id="cart-count">0</span>
-        </div>
     </nav>
 
     <section id="home" class="hero">
         <h1 class="reveal active">WOOF SMP</h1>
-        <p class="reveal active">The Ultimate Next-Gen Survival Experience</p>
         <div class="btn-group reveal active">
             <button class="btn btn-primary" onclick="copyIP()">
                 <i class="fa-solid fa-play"></i> <span id="ip-text">aitchisonlife.xyz</span>
             </button>
-            <button class="btn btn-secondary">
-                <i class="fa-brands fa-discord"></i> Community
-            </button>
-        </div>
-    </section>
-
-    <section id="features">
-        <h2 class="section-title reveal">Why Woof SMP?</h2>
-        <div class="grid">
-            <div class="card reveal">
-                <i class="fa-solid fa-earth-americas"></i>
-                <h3>Survival</h3>
-                <p>Explore a custom-generated world with unique biomes and enhanced vanilla mechanics.</p>
-            </div>
-            <div class="card reveal">
-                <i class="fa-solid fa-chart-line"></i>
-                <h3>Economy</h3>
-                <p>Trade with players, set up shops, and dominate the server market.</p>
-            </div>
-            <div class="card reveal">
-                <i class="fa-solid fa-shield-halved"></i>
-                <h3>Protection</h3>
-                <p>Advanced land claiming tools to keep your builds safe from griefers.</p>
-            </div>
         </div>
     </section>
 
     <section id="shop">
         <h2 class="section-title reveal">Server Store</h2>
+        <div class="timer-container reveal">
+            Daily Reset In: <span id="daily-timer">00:00:00</span>
+        </div>
+        
         <div class="grid">
-            <div class="card shop-item reveal">
+            <div class="card shop-item reveal" id="item-iron">
                 <img src="https://minecraft.wiki/images/Iron_Ingot_JE3_BE2.png" alt="Iron">
-                <h3>Iron Rank</h3>
-                <p class="price">$4.99</p>
-                <button class="btn btn-primary" onclick="addToCart('Iron Rank', 4.99)">Add to Cart</button>
+                <h3>Iron Ingot</h3>
+                <p>Daily Limit: 5</p>
+                <button class="btn btn-primary" onclick="openPurchase('iron')">Get</button>
             </div>
-            <div class="card shop-item reveal">
+            <div class="card shop-item reveal" id="item-gold">
                 <img src="https://minecraft.wiki/images/Gold_Ingot_JE4_BE2.png" alt="Gold">
-                <h3>Gold Rank</h3>
-                <p class="price">$9.99</p>
-                <button class="btn btn-primary" onclick="addToCart('Gold Rank', 9.99)">Add to Cart</button>
+                <h3>Gold Ingot</h3>
+                <p>Daily Limit: 10</p>
+                <button class="btn btn-primary" onclick="openPurchase('gold')">Get</button>
             </div>
-            <div class="card shop-item reveal">
+            <div class="card shop-item reveal" id="item-apple">
+                <img src="https://minecraft.wiki/images/Apple_JE3_BE3.png" alt="Apple">
+                <h3>Red Apple</h3>
+                <p>Daily Limit: 64</p>
+                <button class="btn btn-primary" onclick="openPurchase('apple')">Get</button>
+            </div>
+            <div class="card shop-item reveal" id="item-diamond">
                 <img src="https://minecraft.wiki/images/Diamond_JE3_BE3.png" alt="Diamond">
-                <h3>Diamond Rank</h3>
-                <p class="price">$19.99</p>
-                <button class="btn btn-primary" onclick="addToCart('Diamond Rank', 19.99)">Add to Cart</button>
+                <h3>Diamond</h3>
+                <p>Daily Limit: 1</p>
+                <button class="btn btn-primary" onclick="openPurchase('diamond')">Get</button>
             </div>
         </div>
     </section>
 
-    <section id="status">
-        <div class="status-panel reveal">
-            <h2><span class="pulse"></span> Server Status</h2>
-            <div class="stat-grid">
-                <div>
-                    <div class="counter" data-target="2">0</div>
-                    <p>Players Online</p>
+    <div id="purchase-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title" style="font-family: Orbitron; color: var(--blue);">Purchase Item</h2>
+            
+            <input type="text" id="ign-input" class="input-field" placeholder="Enter In-Game Name...">
+            
+            <div class="slider-wrapper" id="slider-container">
+                <div class="slider-label">
+                    <span>Quantity:</span>
+                    <span id="quantity-val" style="color: var(--blue);">1</span>
                 </div>
-                <div>
-                    <div class="counter" data-target="20">0</div>
-                    <p>TPS</p>
-                </div>
-                <div>
-                    <div class="counter" data-target="99">0</div>
-                    <p>% Uptime</p>
-                </div>
+                <input type="range" id="quantity-slider" min="1" max="10" value="1" oninput="updateSliderVal(this.value)">
             </div>
-        </div>
-    </section>
 
-    <div id="cart-modal">
-        <div class="cart-content">
-            <h2 style="font-family: Orbitron; margin-bottom: 20px;">Your Cart</h2>
-            <div id="cart-list"></div>
-            <div style="margin-top: 20px; font-size: 1.5rem; font-weight: bold;">
-                Total: $<span id="cart-total">0.00</span>
-            </div>
             <div class="btn-group" style="margin-top: 30px;">
-                <button class="btn btn-primary">Checkout Now</button>
-                <button class="btn btn-secondary" onclick="toggleCart()">Close</button>
+                <button class="btn btn-primary" onclick="confirmPurchase()">Confirm</button>
+                <button class="btn btn-secondary" onclick="closeModal()" style="background: transparent; border: 1px solid #444; color: white;">Cancel</button>
             </div>
         </div>
     </div>
 
+    <section id="status">
+        <div class="status-panel reveal">
+            <h2>Live Network Status</h2>
+            <p style="margin-top: 10px; opacity: 0.7;">Server is currently Online and Healthy</p>
+        </div>
+    </section>
+
     <footer>
         <p>&copy; 2026 Woof SMP Network. All Rights Reserved.</p>
-        <p style="margin-top: 10px; font-size: 0.7rem;">Not an official Minecraft product. Not approved by or associated with Mojang.</p>
     </footer>
 
     <script>
-        // --- SCROLL REVEAL LOGIC ---
+        // Data Configuration
+        const limits = { iron: 5, gold: 10, apple: 64, diamond: 1 };
+        let currentItem = '';
+
+        // Initialize Daily Limits from Local Storage
+        let dailyStock = JSON.parse(localStorage.getItem('woof_smp_stock')) || { iron: 0, gold: 0, apple: 0, diamond: 0 };
+
+        function openPurchase(item) {
+            currentItem = item;
+            const remaining = limits[item] - dailyStock[item];
+            
+            if(remaining <= 0) {
+                alert("You've reached your daily limit for this item!");
+                return;
+            }
+
+            document.getElementById('modal-title').innerText = "Get " + item.charAt(0).toUpperCase() + item.slice(1);
+            const slider = document.getElementById('quantity-slider');
+            slider.max = remaining;
+            slider.value = 1;
+            updateSliderVal(1);
+
+            document.getElementById('purchase-modal').style.display = 'flex';
+        }
+
+        function updateSliderVal(val) {
+            document.getElementById('quantity-val').innerText = val;
+        }
+
+        function closeModal() {
+            document.getElementById('purchase-modal').style.display = 'none';
+        }
+
+        function confirmPurchase() {
+            const ign = document.getElementById('ign-input').value;
+            const qty = parseInt(document.getElementById('quantity-slider').value);
+
+            if(!ign || ign.length < 3) {
+                alert("Please enter a valid In-Game Name.");
+                return;
+            }
+
+            // Update local tracking
+            dailyStock[currentItem] += qty;
+            localStorage.setItem('woof_smp_stock', JSON.stringify(dailyStock));
+
+            alert(`Success! ${qty} ${currentItem}(s) sent to ${ign}.`);
+            closeModal();
+            updateButtonStates();
+        }
+
+        function updateButtonStates() {
+            for (const [item, limit] of Object.entries(limits)) {
+                if(dailyStock[item] >= limit) {
+                    const btn = document.querySelector(`#item-${item} button`);
+                    btn.innerText = "Limit Reached";
+                    btn.disabled = true;
+                }
+            }
+        }
+
+        // Timer Logic (Countdown to Midnight)
+        function updateTimer() {
+            const now = new Date();
+            const tomorrow = new Date();
+            tomorrow.setHours(24, 0, 0, 0);
+            
+            const diff = tomorrow - now;
+            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
+            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
+            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
+            
+            document.getElementById('daily-timer').innerText = `${h}:${m}:${s}`;
+            
+            // Reset daily stock at midnight
+            if (diff <= 1000) {
+                dailyStock = { iron: 0, gold: 0, apple: 0, diamond: 0 };
+                localStorage.setItem('woof_smp_stock', JSON.stringify(dailyStock));
+                location.reload(); 
+            }
+        }
+
+        setInterval(updateTimer, 1000);
+        updateButtonStates();
+
+        // Standard Scroll Reveal
         const revealElements = document.querySelectorAll('.reveal');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    if (entry.target.querySelector('.counter')) {
-                        startCounters(entry.target);
-                    }
-                }
+                if (entry.isIntersecting) entry.target.classList.add('active');
             });
-        }, { threshold: 0.2 });
-
+        }, { threshold: 0.1 });
         revealElements.forEach(el => revealObserver.observe(el));
 
-        // --- COUNTER LOGIC ---
-        function startCounters(container) {
-            const counters = container.querySelectorAll('.counter');
-            counters.forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const update = () => {
-                    const count = +counter.innerText;
-                    const speed = target / 50;
-                    if (count < target) {
-                        counter.innerText = Math.ceil(count + speed);
-                        setTimeout(update, 30);
-                    } else {
-                        counter.innerText = target;
-                    }
-                };
-                update();
-            });
-        }
-
-        // --- COPY IP LOGIC ---
         function copyIP() {
             const ip = "aitchisonlife.xyz";
             navigator.clipboard.writeText(ip);
             const span = document.getElementById('ip-text');
             span.innerText = "Copied!";
             setTimeout(() => span.innerText = ip, 2000);
-        }
-
-        // --- CART LOGIC ---
-        let cart = [];
-        let total = 0;
-
-        function addToCart(name, price) {
-            cart.push({ name, price });
-            total += price;
-            updateUI();
-            
-            // Subtle button animation
-            const btn = event.target;
-            btn.innerText = "Added!";
-            setTimeout(() => btn.innerText = "Add to Cart", 1000);
-        }
-
-        function updateUI() {
-            document.getElementById('cart-count').innerText = cart.length;
-            document.getElementById('cart-total').innerText = total.toFixed(2);
-            
-            const list = document.getElementById('cart-list');
-            list.innerHTML = cart.map((item, index) => `
-                <div class="cart-item">
-                    <span>${item.name}</span>
-                    <span>$${item.price}</span>
-                </div>
-            `).join('');
-        }
-
-        function toggleCart() {
-            const modal = document.getElementById('cart-modal');
-            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
         }
     </script>
 </body>

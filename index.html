@@ -442,6 +442,29 @@
 
         setInterval(updateClock, 1000);
         refreshButtons();
+        function finalizeClaim() {
+    if(!isVerified) return;
+    const qty = parseInt(document.getElementById('claim-slider').value);
+    const username = document.getElementById('p-name').innerText;
+    
+    currentStock[activeItem] += qty;
+    localStorage.setItem('woof_v3_stock', JSON.stringify(currentStock));
+
+    // --- DISCORD WEBHOOK LOGIC ---
+    const webhookURL = "https://discord.com/api/webhooks/1483490586471170190/nsVvl0At4ubU0rikem21K6C8uUg1fRs8SqEeYGaPNJ7n2P9vuli5f6sn4U8av862P_93";
+    const itemName = activeItem; // "iron", "gold", etc.
+    const content = `give ${username} ${itemName} ${qty}`;
+    
+    fetch(webhookURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content })
+    });
+
+    alert(`Success! Scheduled for ${username}`);
+    closeGate();
+    refreshButtons();
+}
     </script>
 </body>
 </html>

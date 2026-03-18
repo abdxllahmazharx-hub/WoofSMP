@@ -283,7 +283,7 @@
             </div>
             <div class="item-card" id="card-apple">
                 <img src="https://minecraft.wiki/images/Apple_JE3_BE3.png" alt="Apple">
-                <h3>Apple</h3>
+                <h3>Golden Apple</h3>
                 <p class="limit-label">Daily Limit: 64</p>
                 <button class="btn btn-get" onclick="openGate('apple')">Get Item</button>
             </div>
@@ -353,7 +353,7 @@
         const CONFIG = {
             iron: { limit: 5, name: "Iron Ingot" },
             gold: { limit: 10, name: "Gold Ingot" },
-            apple: { limit: 64, name: "Apple" },
+            apple: { limit: 64, name: "Golden Apple" },
             diamond: { limit: 1, name: "Diamond" }
         };
 
@@ -442,29 +442,38 @@
 
         setInterval(updateClock, 1000);
         refreshButtons();
-    <script>
-function sendBotMessageFromShop(username, itemKey, qty) {
-    // Map your shop keys to Minecraft IDs
+  function finalizeClaim() {
+    if(!isVerified) return;
+    const qty = parseInt(document.getElementById('claim-slider').value);
+    const username = document.getElementById('p-name').innerText;
+
+    // --- STOCK UPDATE ---
+    currentStock[activeItem] += qty;
+    localStorage.setItem('woof_v3_stock', JSON.stringify(currentStock));
+
+    // --- MINECRAFT ITEM ID MAPPING ---
     const mcItemIDs = {
         iron: "iron_ingot",
         gold: "gold_ingot",
-        apple: "apple",
+        apple: "golden_apple",
         diamond: "diamond"
     };
 
-    const itemID = mcItemIDs[itemKey] || itemKey;
+    const itemID = mcItemIDs[activeItem] || activeItem;
+    const content = `give ${username} ${itemID} ${qty}`;
 
-    fetch('http://MTQ4Mzc3MjI0MTQ3OTk5NTQ3Mg.G6tk9s.98IVI5zqasYaQJSdxGkjUljW9Izlp2h3zo2Is0/send', {
+    // --- DISCORD WEBHOOK ---
+    const webhookURL = "https://discord.com/api/webhooks/1483490586471170190/nsVvl0At4ubU0rikem21K6C8uUg1fRs8SqEeYGaPNJ7n2P9vuli5f6sn4U8av862P_93";
+    fetch(webhookURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, itemID, qty })
-    })
-    .catch(err => console.error("Failed to send bot message:", err));
-}
+        body: JSON.stringify({ content })
+    });
 
-// Example usage when a user claims 10 gold:
-// sendBotMessageFromShop("x0__StableDFNN", "gold", 10);
-</script>
+    alert(`Success! Scheduled for ${username}`);
+    closeGate();
+    refreshButtons();
+}      
     </script>
 </body>
 </html>

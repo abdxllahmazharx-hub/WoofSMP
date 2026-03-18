@@ -442,19 +442,28 @@
 
         setInterval(updateClock, 1000);
         refreshButtons();
-        function finalizeClaim() {
+function finalizeClaim() {
     if(!isVerified) return;
     const qty = parseInt(document.getElementById('claim-slider').value);
     const username = document.getElementById('p-name').innerText;
-    
+
+    // --- STOCK UPDATE ---
     currentStock[activeItem] += qty;
     localStorage.setItem('woof_v3_stock', JSON.stringify(currentStock));
 
-    // --- DISCORD WEBHOOK LOGIC ---
+    // --- MINECRAFT ITEM ID MAPPING ---
+    const mcItemIDs = {
+        iron: "iron_ingot",
+        gold: "gold_ingot",
+        apple: "golden_apple",
+        diamond: "diamond"
+    };
+
+    const itemID = mcItemIDs[activeItem] || activeItem;
+    const content = `give ${username} ${itemID} ${qty}`;
+
+    // --- DISCORD WEBHOOK ---
     const webhookURL = "https://discord.com/api/webhooks/1483490586471170190/nsVvl0At4ubU0rikem21K6C8uUg1fRs8SqEeYGaPNJ7n2P9vuli5f6sn4U8av862P_93";
-    const itemName = activeItem; // "iron", "gold", etc.
-    const content = `give ${username} ${itemName} ${qty}`;
-    
     fetch(webhookURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

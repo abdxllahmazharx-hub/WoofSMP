@@ -5,380 +5,292 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WOOF SMP | Next-Gen Survival</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
             --primary: #00f2ff;
             --secondary: #7000ff;
-            --accent: #ffcc33;
             --bg-dark: #030303;
             --card-bg: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(0, 242, 255, 0.2);
             --text-main: #e0e0e0;
-            --success: #00ff88;
-            --error: #ff3366;
             --spacing-lg: 100px;
-            --spacing-md: 40px;
         }
 
-        * {
-            margin: 0; padding: 0; box-sizing: border-box;
-            scrollbar-width: thin; scrollbar-color: var(--secondary) var(--bg-dark);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            line-height: 1.6;
         }
 
-        /* --- FANCY BACKGROUND --- */
+        /* --- BACKGROUND --- */
         .glow-mesh {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, #110022 0%, #030303 100%);
+            background: radial-gradient(circle at 50% 50%, #0a001a 0%, #030303 100%);
             z-index: -2;
         }
 
-        .orb {
-            position: absolute; width: 400px; height: 400px;
-            background: var(--secondary); border-radius: 50%;
-            filter: blur(120px); opacity: 0.15;
-            animation: float 20s infinite alternate;
-        }
-
-        @keyframes float {
-            0% { transform: translate(-10%, -10%); }
-            100% { transform: translate(20%, 30%); }
-        }
-
-        /* --- NAVIGATION --- */
+        /* --- NAV & UPTIME PILL (As requested in image) --- */
         .navbar {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 25px 8%; display: flex; justify-content: space-between; align-items: center;
-            background: rgba(3, 3, 3, 0.7); backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--card-border);
+            padding: 20px 8%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(3, 3, 3, 0.8); backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        .logo {
-            font-family: 'Orbitron'; font-weight: 800; font-size: 1.6rem;
-            letter-spacing: 3px; color: #fff; text-decoration: none;
-        }
+        .logo { font-family: 'Orbitron'; font-weight: 800; font-size: 1.6rem; color: #fff; text-decoration: none; }
         .logo span { color: var(--primary); text-shadow: 0 0 15px var(--primary); }
 
-        /* --- HERO SECTION --- */
+        .uptime-pill {
+            display: flex; align-items: center; gap: 12px;
+            padding: 8px 25px; border-radius: 50px;
+            border: 1.5px solid var(--primary);
+            background: rgba(0, 242, 255, 0.05);
+            box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.1), 0 0 15px rgba(0, 242, 255, 0.1);
+        }
+
+        .uptime-pill i { color: var(--primary); font-size: 1.1rem; }
+        .uptime-pill span {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary); font-size: 1.2rem; font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* --- HERO --- */
         .hero {
-            height: 100vh; display: flex; flex-direction: column;
+            height: 70vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center; text-align: center;
-            padding: 0 10%; background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
         }
 
         .hero h1 {
-            font-family: 'Orbitron'; font-size: clamp(2.5rem, 8vw, 6rem);
-            text-transform: uppercase; margin-bottom: 20px;
-            background: linear-gradient(135deg, #fff 30%, var(--primary), var(--secondary));
+            font-family: 'Orbitron'; font-size: clamp(2.5rem, 8vw, 5rem);
+            background: linear-gradient(135deg, #fff, var(--primary));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
         }
 
-        /* --- SHOP GRID --- */
-        .shop-container { padding: var(--spacing-lg) 10%; }
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-family: 'Orbitron'; font-size: 2.5rem; margin-bottom: 10px; }
-
-        .timer-badge {
-            display: inline-block; padding: 8px 20px; border-radius: 50px;
-            background: rgba(0, 242, 255, 0.1); border: 1px solid var(--primary);
-            color: var(--primary); font-family: 'Orbitron'; font-size: 0.9rem;
+        /* --- SHOP SECTION --- */
+        .shop-container { padding: 50px 10% 100px; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        
+        .cooldown-info {
+            font-family: 'Orbitron'; color: #777; font-size: 0.8rem;
+            margin-top: 10px; text-transform: uppercase; letter-spacing: 2px;
         }
+        #cooldown-timer { color: var(--secondary); font-weight: bold; }
 
         .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px; margin-top: 50px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
         }
 
         .item-card {
-            background: var(--card-bg); border: 1px solid var(--card-border);
-            border-radius: 30px; padding: 40px; text-align: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative; overflow: hidden;
+            background: var(--card-bg); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 25px; padding: 40px; text-align: center;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .item-card:hover {
-            transform: translateY(-15px); border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-10px); border-color: var(--primary);
+            background: rgba(0, 242, 255, 0.02);
         }
 
-        .item-card img { width: 100px; height: 100px; object-fit: contain; margin-bottom: 25px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); }
-        .item-card h3 { font-family: 'Orbitron'; font-size: 1.4rem; margin-bottom: 10px; }
-        .item-card .limit-label { font-size: 0.8rem; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* --- BUTTONS --- */
+        .item-card img { width: 80px; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(0,242,255,0.2)); }
+        
         .btn {
-            margin-top: 25px; padding: 14px 30px; border-radius: 12px;
-            font-family: 'Orbitron'; font-weight: 600; cursor: pointer;
-            transition: 0.3s; border: none; text-transform: uppercase;
-            width: 100%; letter-spacing: 1px;
+            width: 100%; padding: 15px; border-radius: 12px;
+            font-family: 'Orbitron'; font-weight: 700; cursor: pointer;
+            transition: 0.3s; border: none; margin-top: 20px;
         }
 
-        .btn-get {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: #000; box-shadow: 0 5px 15px rgba(0, 242, 255, 0.3);
-        }
+        .btn-get { background: var(--primary); color: #000; }
+        .btn-get:hover { box-shadow: 0 0 20px var(--primary); transform: scale(1.02); }
+        .btn:disabled { background: #1a1a1a; color: #444; cursor: not-allowed; }
 
-        .btn-get:hover { filter: brightness(1.2); transform: scale(1.02); }
-        .btn:disabled { background: #222; color: #555; cursor: not-allowed; box-shadow: none; }
-
-        /* --- MODAL SYSTEM --- */
+        /* --- MODAL --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(20px);
+            background: rgba(0,0,0,0.9); backdrop-filter: blur(20px);
             display: none; justify-content: center; align-items: center; z-index: 2000;
-            padding: 20px;
         }
 
         .modal-card {
-            background: #0a0a0a; border: 1px solid var(--primary);
-            width: 100%; max-width: 500px; border-radius: 35px;
-            padding: 40px; position: relative;
-            box-shadow: 0 0 60px rgba(0, 242, 255, 0.15);
-        }
-
-        .verify-box {
-            display: flex; gap: 10px; margin-bottom: 25px;
+            background: #080808; border: 1px solid var(--primary);
+            width: 90%; max-width: 450px; border-radius: 30px; padding: 40px;
         }
 
         input[type="text"] {
-            flex: 1; background: #111; border: 1px solid var(--card-border);
-            padding: 15px 20px; border-radius: 15px; color: #fff;
-            font-family: 'Inter'; outline: none; transition: 0.3s;
+            width: 100%; background: #111; border: 1px solid #222;
+            padding: 15px; border-radius: 10px; color: #fff; margin: 20px 0;
         }
-
-        input[type="text"]:focus { border-color: var(--primary); }
 
         .player-preview {
             display: none; align-items: center; gap: 15px;
-            background: rgba(255,255,255,0.05); padding: 15px;
-            border-radius: 15px; margin-bottom: 25px; border-left: 4px solid var(--success);
+            background: #111; padding: 15px; border-radius: 12px; margin-bottom: 20px;
         }
 
-        .player-preview img { width: 50px; border-radius: 8px; }
+        /* --- SLIDER --- */
+        .slider-wrap { margin-top: 20px; }
+        input[type="range"] { width: 100%; accent-color: var(--primary); margin-top: 10px; }
 
-        /* --- RANGE SLIDER --- */
-        .slider-group { margin-top: 30px; }
-        .slider-info { display: flex; justify-content: space-between; font-family: 'Orbitron'; margin-bottom: 15px; }
-        
-        input[type="range"] {
-            width: 100%; height: 10px; background: #222;
-            border-radius: 10px; appearance: none; outline: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            appearance: none; width: 25px; height: 25px;
-            background: var(--primary); border-radius: 50%;
-            cursor: pointer; box-shadow: 0 0 15px var(--primary);
-        }
-
-        /* --- RESPONSIVE --- */
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; }
-            .grid { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="glow-mesh">
-        <div class="orb"></div>
-    </div>
+    <div class="glow-mesh"></div>
 
     <nav class="navbar">
         <a href="#" class="logo">WOOF<span>SMP</span></a>
-        <div class="timer-badge">
-            <i class="fa-solid fa-clock"></i> <span id="reset-timer">00:00:00</span>
+        <div class="uptime-pill">
+            <i class="fa-solid fa-clock"></i>
+            <span id="uptime-display">00:01:00</span>
         </div>
     </nav>
 
     <section class="hero">
-        <h1>Level Up Your Game</h1>
-        <p style="font-size: 1.2rem; opacity: 0.7; max-width: 600px;">Experience survival like never before. High performance, custom economy, and a dedicated community.</p>
+        <h1>PREMIUM STORE</h1>
+        <div class="cooldown-info">
+            Next Delivery Available: <span id="cooldown-timer">NOW</span>
+        </div>
     </section>
 
     <section class="shop-container">
-        <div class="section-header">
-            <h2>Daily Rewards Shop</h2>
-            <p>Claim your essential items. Limits reset every 24 hours.</p>
-        </div>
-
-        <div class="grid" id="shop-grid">
+        <div class="grid">
             <div class="item-card" id="card-iron">
-                <img src="https://minecraft.wiki/images/Iron_Ingot_JE3_BE2.png" alt="Iron">
+                <img src="https://minecraft.wiki/images/Iron_Ingot_JE3_BE2.png">
                 <h3>Iron Ingot</h3>
-                <p class="limit-label">Daily Limit: 5</p>
-                <button class="btn btn-get" onclick="openGate('iron')">Get Item</button>
+                <p style="opacity:0.5; font-size: 0.8rem;">LIMIT: 5</p>
+                <button class="btn btn-get" onclick="openModal('iron')">Get</button>
             </div>
             <div class="item-card" id="card-gold">
-                <img src="https://minecraft.wiki/images/Gold_Ingot_JE4_BE2.png" alt="Gold">
+                <img src="https://minecraft.wiki/images/Gold_Ingot_JE4_BE2.png">
                 <h3>Gold Ingot</h3>
-                <p class="limit-label">Daily Limit: 10</p>
-                <button class="btn btn-get" onclick="openGate('gold')">Get Item</button>
+                <p style="opacity:0.5; font-size: 0.8rem;">LIMIT: 10</p>
+                <button class="btn btn-get" onclick="openModal('gold')">Get</button>
             </div>
             <div class="item-card" id="card-apple">
-                <img src="https://minecraft.wiki/images/Apple_JE3_BE3.png" alt="Apple">
+                <img src="https://minecraft.wiki/images/Apple_JE3_BE3.png">
                 <h3>Golden Apple</h3>
-                <p class="limit-label">Daily Limit: 64</p>
-                <button class="btn btn-get" onclick="openGate('apple')">Get Item</button>
+                <p style="opacity:0.5; font-size: 0.8rem;">LIMIT: 64</p>
+                <button class="btn btn-get" onclick="openModal('apple')">Get</button>
             </div>
             <div class="item-card" id="card-diamond">
-                <img src="https://minecraft.wiki/images/Diamond_JE3_BE3.png" alt="Diamond">
+                <img src="https://minecraft.wiki/images/Diamond_JE3_BE3.png">
                 <h3>Diamond</h3>
-                <p class="limit-label">Daily Limit: 1</p>
-                <button class="btn btn-get" onclick="openGate('diamond')">Get Item</button>
+                <p style="opacity:0.5; font-size: 0.8rem;">LIMIT: 1</p>
+                <button class="btn btn-get" onclick="openModal('diamond')">Get</button>
             </div>
         </div>
     </section>
 
-    <div class="modal-overlay" id="modal-purchase">
+    <div class="modal-overlay" id="purchase-modal">
         <div class="modal-card">
-            <h2 id="m-title" style="font-family: Orbitron; margin-bottom: 25px;">Claim Item</h2>
-            
-            <div class="verify-box">
-                <input type="text" id="mc-username" placeholder="Minecraft Username">
-                <button class="btn btn-get" style="margin:0; width: auto;" onclick="verifyUser()">Verify</button>
+            <h2 id="m-title" style="font-family: Orbitron;">Verify Identity</h2>
+            <input type="text" id="username" placeholder="Minecraft Username">
+            <button class="btn btn-get" style="margin:0;" onclick="verifyMC()">Check Account</button>
+
+            <div class="player-preview" id="preview">
+                <img id="p-img" src="" style="width: 40px; border-radius: 5px;">
+                <span id="p-user" style="font-weight: bold; color: var(--primary);"></span>
             </div>
 
-            <div class="player-preview" id="player-data">
-                <img id="p-head" src="" alt="">
-                <div>
-                    <p id="p-name" style="font-weight: 700; color: var(--success);"></p>
-                    <p style="font-size: 0.7rem; opacity: 0.5;">Account Verified</p>
+            <div id="qty-box" style="display:none;" class="slider-wrap">
+                <div style="display:flex; justify-content: space-between; font-family: Orbitron; font-size: 0.8rem;">
+                    <span>Quantity</span>
+                    <span id="qty-val" style="color:var(--primary)">1</span>
                 </div>
-            </div>
-
-            <div class="slider-group" id="amount-selector" style="display: none;">
-                <div class="slider-info">
-                    <span>Amount</span>
-                    <span id="range-val" style="color: var(--primary);">1</span>
-                </div>
-                <input type="range" id="claim-slider" min="1" max="1" value="1" oninput="document.getElementById('range-val').innerText = this.value">
-                
-                <button class="btn btn-get" style="margin-top: 40px;" onclick="finalizeClaim()">Confirm Delivery</button>
+                <input type="range" id="qty-slider" min="1" oninput="document.getElementById('qty-val').innerText=this.value">
+                <button class="btn btn-get" style="margin-top:30px" onclick="confirmClaim()">Confirm Claim</button>
             </div>
             
-            <button class="btn" style="background: transparent; border: 1px solid #333; color: #777;" onclick="closeGate()">Cancel</button>
+            <button class="btn" style="background:transparent; color:#444;" onclick="closeModal()">Cancel</button>
         </div>
     </div>
 
     <script>
-        const CONFIG = {
-            iron: { limit: 5, name: "Iron Ingot" },
-            gold: { limit: 10, name: "Gold Ingot" },
-            apple: { limit: 64, name: "Golden Apple" },
-            diamond: { limit: 1, name: "Diamond" }
-        };
-
-        let activeItem = null;
-        let isVerified = false;
-        let currentStock = JSON.parse(localStorage.getItem('woof_v3_stock')) || { iron: 0, gold: 0, apple: 0, diamond: 0 };
-
-        // --- OPEN MODAL ---
-        function openGate(id) {
-            activeItem = id;
-            const remaining = CONFIG[id].limit - currentStock[id];
-            
-            if(remaining <= 0) return alert("Out of stock for today!");
-
-            document.getElementById('m-title').innerText = "Claim " + CONFIG[id].name;
-            document.getElementById('claim-slider').max = remaining;
-            document.getElementById('modal-purchase').style.display = 'flex';
+        const ITEMS = { iron: 5, gold: 10, apple: 64, diamond: 1 };
+        let selected = '';
+        
+        // --- UPTIME ENGINE (Starts at 1min, never stops) ---
+        let uptimeSeconds = 60; 
+        function startUptime() {
+            setInterval(() => {
+                uptimeSeconds++;
+                const h = Math.floor(uptimeSeconds / 3600).toString().padStart(2, '0');
+                const m = Math.floor((uptimeSeconds % 3600) / 60).toString().padStart(2, '0');
+                const s = Math.floor(uptimeSeconds % 60).toString().padStart(2, '0');
+                document.getElementById('uptime-display').innerText = `${h}:${m}:${s}`;
+            }, 1000);
         }
 
-        function closeGate() {
-            document.getElementById('modal-purchase').style.display = 'none';
-            resetModal();
-        }
-
-        function resetModal() {
-            isVerified = false;
-            document.getElementById('mc-username').value = "";
-            document.getElementById('player-data').style.display = 'none';
-            document.getElementById('amount-selector').style.display = 'none';
-        }
-
-        // --- MINECRAFT API VERIFICATION ---
-        async function verifyUser() {
-            const user = document.getElementById('mc-username').value;
-            if(!user) return;
-
-            const btn = event.target;
-            btn.innerText = "...";
-
-            try {
-                const response = await fetch(`https://api.ashcon.app/mojang/v2/user/${user}`);
-                if(!response.ok) throw new Error();
-                
-                const data = await response.json();
-                
-                document.getElementById('p-head').src = `https://mc-heads.net/avatar/${data.uuid}`;
-                document.getElementById('p-name').innerText = data.username;
-                document.getElementById('player-data').style.display = 'flex';
-                document.getElementById('amount-selector').style.display = 'block';
-                isVerified = true;
-                btn.innerText = "Check";
-            } catch (err) {
-                alert("Minecraft account not found! Please check spelling.");
-                btn.innerText = "Verify";
+        // --- COOLDOWN LOGIC (Only starts after first get) ---
+        function checkCooldown() {
+            const lastClaim = localStorage.getItem('lastClaimTime');
+            if(!lastClaim) {
+                document.getElementById('cooldown-timer').innerText = "READY";
+                return;
             }
-        }
 
-        // --- FINALIZE ---
-        function finalizeClaim() {
-            if(!isVerified) return;
-            
-            const qty = parseInt(document.getElementById('claim-slider').value);
-            currentStock[activeItem] += qty;
-            localStorage.setItem('woof_v3_stock', JSON.stringify(currentStock));
+            const diff = Date.now() - parseInt(lastClaim);
+            const remaining = (24 * 60 * 60 * 1000) - diff;
 
-            alert(`Success! Delivery of ${qty} units has been scheduled for ${document.getElementById('p-name').innerText}`);
-            closeGate();
-            refreshButtons();
-        }
-
-        function refreshButtons() {
-            for(let key in CONFIG) {
-                if(currentStock[key] >= CONFIG[key].limit) {
-                    const btn = document.querySelector(`#card-${key} .btn`);
-                    btn.disabled = true;
-                    btn.innerText = "Claimed Today";
-                }
-            }
-        }
-
-        // --- TIMER ---
-        function updateClock() {
-            const now = new Date();
-            const next = new Date();
-            next.setHours(24, 0, 0, 0);
-            
-            const diff = next - now;
-            const h = Math.floor(diff / 3600000).toString().padStart(2, '0');
-            const m = Math.floor((diff % 3600000) / 60000).toString().padStart(2, '0');
-            const s = Math.floor((diff % 60000) / 1000).toString().padStart(2, '0');
-            
-            document.getElementById('reset-timer').innerText = `${h}:${m}:${s}`;
-
-            if(diff <= 1000) {
-                localStorage.removeItem('woof_v3_stock');
+            if(remaining <= 0) {
+                localStorage.removeItem('lastClaimTime');
+                localStorage.removeItem('claimedItems');
                 location.reload();
+            } else {
+                const h = Math.floor(remaining / 3600000).toString().padStart(2, '0');
+                const m = Math.floor((remaining % 3600000) / 60000).toString().padStart(2, '0');
+                const s = Math.floor((remaining % 60000) / 1000).toString().padStart(2, '0');
+                document.getElementById('cooldown-timer').innerText = `${h}:${m}:${s}`;
+                
+                // Disable all buttons if in cooldown
+                document.querySelectorAll('.btn-get').forEach(b => {
+                    b.disabled = true;
+                    b.innerText = "LOCKED";
+                });
             }
         }
 
-        setInterval(updateClock, 1000);
-        refreshButtons();
+        function openModal(id) {
+            selected = id;
+            document.getElementById('qty-slider').max = ITEMS[id];
+            document.getElementById('purchase-modal').style.display = 'flex';
+        }
 
+        function closeModal() {
+            document.getElementById('purchase-modal').style.display = 'none';
+        }
+
+        async function verifyMC() {
+            const user = document.getElementById('username').value;
+            try {
+                const res = await fetch(`https://api.ashcon.app/mojang/v2/user/${user}`);
+                const data = await res.json();
+                document.getElementById('p-img').src = `https://mc-heads.net/avatar/${data.uuid}`;
+                document.getElementById('p-user').innerText = data.username;
+                document.getElementById('preview').style.display = 'flex';
+                document.getElementById('qty-box').style.display = 'block';
+            } catch { alert("User not found!"); }
+        }
+
+        function confirmClaim() {
+            // Start the 24 hour timer ONLY now
+            localStorage.setItem('lastClaimTime', Date.now());
+            alert("Claim Successful! Your items are being delivered.");
+            closeModal();
+            checkCooldown();
+        }
+
+        // Init
+        startUptime();
+        setInterval(checkCooldown, 1000);
+        checkCooldown();
     </script>
 </body>
 </html>

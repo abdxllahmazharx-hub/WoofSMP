@@ -287,6 +287,12 @@
                 <p class="limit-label">Daily Limit: 64</p>
                 <button class="btn btn-get" onclick="openGate('apple')">Get Item</button>
             </div>
+            <div class="item-card" id="card-glowstone">
+                <img src="https://minecraft.wiki/images/Glowstone_Dust_JE2_BE2.png" alt="Glowstone Dust">
+                <h3>Glowstone Dust</h3>
+                <p class="limit-label">Daily Limit: 64</p>
+                <button class="btn btn-get" onclick="openGate('glowstone')">Get Item</button>
+            </div>
             <div class="item-card" id="card-diamond">
                 <img src="https://minecraft.wiki/images/Diamond_JE3_BE3.png" alt="Diamond">
                 <h3>Diamond</h3>
@@ -339,7 +345,7 @@
             });
         }
 
-        // --- UPTIME ENGINE (Starts at 1min, never stops) ---
+        // --- UPTIME ENGINE ---
         let uptimeSeconds = 60; 
         setInterval(() => {
             uptimeSeconds++;
@@ -349,21 +355,22 @@
             document.getElementById('uptime-display').innerText = `${h}:${m}:${s}`;
         }, 1000);
 
-        // --- SHOP LOGIC ---
+        // --- SHOP CONFIG ---
         const CONFIG = {
             iron: { limit: 5, name: "Iron Ingot" },
             gold: { limit: 10, name: "Gold Ingot" },
             apple: { limit: 64, name: "Apple" },
+            glowstone: { limit: 64, name: "Glowstone Dust" }, // Added Glowstone Dust
             diamond: { limit: 1, name: "Diamond" }
         };
 
         let activeItem = null;
         let isVerified = false;
-        let currentStock = JSON.parse(localStorage.getItem('woof_v3_stock')) || { iron: 0, gold: 0, apple: 0, diamond: 0 };
+        let currentStock = JSON.parse(localStorage.getItem('woof_v3_stock')) || { iron: 0, gold: 0, apple: 0, glowstone: 0, diamond: 0 };
 
         function openGate(id) {
             activeItem = id;
-            const remaining = CONFIG[id].limit - currentStock[id];
+            const remaining = CONFIG[id].limit - (currentStock[id] || 0);
             if(remaining <= 0) return alert("Out of stock for today!");
             document.getElementById('m-title').innerText = "Claim " + CONFIG[id].name;
             document.getElementById('claim-slider').max = remaining;
@@ -406,16 +413,37 @@
         function finalizeClaim() {
             if(!isVerified) return;
             const qty = parseInt(document.getElementById('claim-slider').value);
-            currentStock[activeItem] += qty;
+            const username = document.getElementById('p-name').innerText;
+
+            currentStock[activeItem] = (currentStock[activeItem] || 0) + qty;
             localStorage.setItem('woof_v3_stock', JSON.stringify(currentStock));
-            alert(`Success! Scheduled for ${document.getElementById('p-name').innerText}`);
+
+            const mcItemIDs = {
+                iron: "iron_ingot",
+                gold: "gold_ingot",
+                apple: "apple",
+                glowstone: "glowstone_dust", // Added Glowstone Dust mapping
+                diamond: "diamond"
+            };
+
+            const itemID = mcItemIDs[activeItem] || activeItem;
+            const content = `give ${username} ${itemID} ${qty}`;
+
+            const webhookURL = "https://discord.com/api/webhooks/1483490586471170190/nsVvl0At4ubU0rikem21K6C8uUg1fRs8SqEeYGaPNJ7n2P9vuli5f6sn4U8av862P_93";
+            fetch(webhookURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content })
+            });
+
+            alert(`Success! Scheduled for ${username}`);
             closeGate();
             refreshButtons();
         }
 
         function refreshButtons() {
             for(let key in CONFIG) {
-                if(currentStock[key] >= CONFIG[key].limit) {
+                if((currentStock[key] || 0) >= CONFIG[key].limit) {
                     const btn = document.querySelector(`#card-${key} .btn`);
                     if(btn) {
                         btn.disabled = true;
@@ -442,38 +470,6 @@
 
         setInterval(updateClock, 1000);
         refreshButtons();
-  function finalizeClaim() {
-    if(!isVerified) return;
-    const qty = parseInt(document.getElementById('claim-slider').value);
-    const username = document.getElementById('p-name').innerText;
-
-    // --- STOCK UPDATE ---
-    currentStock[activeItem] += qty;
-    localStorage.setItem('woof_v3_stock', JSON.stringify(currentStock));
-
-    // --- MINECRAFT ITEM ID MAPPING ---
-    const mcItemIDs = {
-        iron: "iron_ingot",
-        gold: "gold_ingot",
-        apple: "apple",
-        diamond: "diamond"
-    };
-
-    const itemID = mcItemIDs[activeItem] || activeItem;
-    const content = `give ${username} ${itemID} ${qty}`;
-
-    // --- DISCORD WEBHOOK ---
-    const webhookURL = "https://discord.com/api/webhooks/1483490586471170190/nsVvl0At4ubU0rikem21K6C8uUg1fRs8SqEeYGaPNJ7n2P9vuli5f6sn4U8av862P_93";
-    fetch(webhookURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content })
-    });
-
-    alert(`Success! Scheduled for ${username}`);
-    closeGate();
-    refreshButtons();
-}      
     </script>
 </body>
 </html>

@@ -299,17 +299,17 @@
                 <p class="limit-label">Daily Limit: 1</p>
                 <button class="btn btn-get" onclick="openGate('diamond')">Get Item</button>
             </div>
-            <div class="item-card" id="card-nametag">
-                <img src="https://minecraft.wiki/images/Name_Tag_JE2_BE2.png" alt="Name Tag">
+            <div class="item-card" id="card-nametags">
+                <img src="https://www.minecraft.wiki/images/thumb/Name_Tag_JE2_BE2.png/150px-Name_Tag_JE2_BE2.png" alt="Name Tag">
                 <h3>Name Tag</h3>
                 <p class="limit-label">Daily Limit: 2</p>
-                <button class="btn btn-get" onclick="openGate('nametag')">Get Item</button>
+                <button class="btn btn-get" onclick="openGate('nametags')">Get Item</button>
             </div>
-            <div class="item-card" id="card-porkchop">
-                <img src="https://minecraft.wiki/images/Cooked_Porkchop_JE4_BE3.png" alt="Cooked Porkchop">
+            <div class="item-card" id="card-cooked_porkchop">
+                <img src="https://www.minecraft.wiki/images/thumb/Cooked_Porkchop_JE4_BE3.png/150px-Cooked_Porkchop_JE4_BE3.png" alt="Cooked Porkchop">
                 <h3>Cooked Porkchop</h3>
                 <p class="limit-label">Daily Limit: 5</p>
-                <button class="btn btn-get" onclick="openGate('porkchop')">Get Item</button>
+                <button class="btn btn-get" onclick="openGate('cooked_porkchop')">Get Item</button>
             </div>
         </div>
     </section>
@@ -374,13 +374,13 @@
             apple: { limit: 64, name: "Apple" },
             glowstone: { limit: 64, name: "Glowstone Dust" },
             diamond: { limit: 1, name: "Diamond" },
-            nametag: { limit: 2, name: "Name Tag" },
-            porkchop: { limit: 5, name: "Cooked Porkchop" }
+            nametags: { limit: 2, name: "Name Tag" },
+            cooked_porkchop: { limit: 5, name: "Cooked Porkchop" }
         };
 
         let activeItem = null;
         let isVerified = false;
-        let currentStock = JSON.parse(localStorage.getItem('woof_v3_stock')) || { iron: 0, gold: 0, apple: 0, glowstone: 0, diamond: 0, nametag: 0, porkchop: 0 };
+        let currentStock = JSON.parse(localStorage.getItem('woof_v3_stock')) || { iron: 0, gold: 0, apple: 0, glowstone: 0, diamond: 0, nametags: 0, cooked_porkchop: 0 };
 
         function openGate(id) {
             activeItem = id;
@@ -438,8 +438,8 @@
                 apple: "apple",
                 glowstone: "glowstone_dust",
                 diamond: "diamond",
-                nametag: "name_tag",
-                porkchop: "cooked_porkchop"
+                nametags: "name_tag",
+                cooked_porkchop: "cooked_porkchop"
             };
 
             const itemID = mcItemIDs[activeItem] || activeItem;

@@ -424,7 +424,8 @@
             }
         }
 
-        function finalizeClaim() {
+        // --- UPDATED FOR DISCORD BOT VIA CLOUDFLARE ---
+        async function finalizeClaim() {
             if(!isVerified) return;
             const qty = parseInt(document.getElementById('claim-slider').value);
             const username = document.getElementById('p-name').innerText;
@@ -443,16 +444,30 @@
             };
 
             const itemID = mcItemIDs[activeItem] || activeItem;
-            const content = `give ${username} ${itemID} ${qty}`;
+            const command = `give ${username} ${itemID} ${qty}`;
 
-            const webhookURL = "https://discord.com/api/webhooks/1483490586471170190/nsVvl0At4ubU0rikem21K6C8uUg1fRs8SqEeYGaPNJ7n2P9vuli5f6sn4U8av862P_93";
-            fetch(webhookURL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ content })
-            });
+            // !!! REPLACE THIS URL WITH YOUR CLOUDFLARE WORKER URL !!!
+            const workerURL = "https://woof-shop-shield.abdxllahmazharx.workers.dev";
 
-            alert(`Success! Scheduled for ${username}`);
+            try {
+                const res = await fetch(workerURL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        content: command,
+                        username: username 
+                    })
+                });
+                
+                if (res.ok) {
+                    alert(`Success! ${CONFIG[activeItem].name} sent to ${username}`);
+                } else {
+                    alert("Bot Error: Check your Worker configuration.");
+                }
+            } catch (e) {
+                alert("Connection to Bot failed.");
+            }
+
             closeGate();
             refreshButtons();
         }
